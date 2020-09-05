@@ -7564,6 +7564,30 @@ const devices = [
         },
     },
     {
+        zigbeeModel: ['ICZB-RM11S'],
+        model: 'ICZB-RM11S',
+        vendor: 'iCasa',
+        description: 'Zigbee 3.0 Remote Control',
+        supports: 'click, action, brightness, scenes',
+        fromZigbee: [
+            fz.command_recall, fz.legacy_scenes_recall_click, fz.command_on, fz.legacy_genOnOff_cmdOn, fz.command_off,
+            fz.legacy_genOnOff_cmdOff, fz.battery, fz.legacy_cmd_move_with_onoff, fz.legacy_cmd_stop_with_onoff,
+        ],
+        toZigbee: [],
+    },
+    {
+        zigbeeModel: ['ICZB-KPD12'],
+        model: 'ICZB-KPD12',
+        vendor: 'iCasa',
+        description: 'Zigbee 3.0 Keypad Pulse 2',
+        supports: 'click, action, brightness',
+        fromZigbee: [
+            fz.command_recall, fz.command_on, fz.legacy_genOnOff_cmdOn, fz.command_off,
+            fz.legacy_genOnOff_cmdOff, fz.battery, fz.legacy_cmd_move_with_onoff, fz.legacy_cmd_stop_with_onoff,
+        ],
+        toZigbee: [],
+    },
+    {
         zigbeeModel: ['ICZB-KPD14S'],
         model: 'ICZB-KPD14S',
         vendor: 'iCasa',
