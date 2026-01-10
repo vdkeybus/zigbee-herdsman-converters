@@ -49,6 +49,57 @@ const local = {
                     outletLedState: {ID: 0x0104, type: Zcl.DataType.UINT8, write: true, max: 0xff},
                     /* WARNING: 0x0107 is not supported on older switches */
                     ledSyncMode: {ID: 0x0107, type: Zcl.DataType.BITMAP32, write: true},
+
+                    attr_0x0101: {ID: 0x0101, type: Zcl.DataType.UINT8, write: true},
+                    attr_0x0102: {ID: 0x0102, type: Zcl.DataType.UINT8, write: true},
+                    attr_0x0103: {ID: 0x0103, type: Zcl.DataType.UINT8, write: true},
+
+                    attr_0x0105: {ID: 0x0105, type: Zcl.DataType.BITMAP8, write: true},
+                    attr_0x0106: {ID: 0x0106, type: Zcl.DataType.UINT8, write: true},
+
+                    attr_0x0200: {ID: 0x0200, type: Zcl.DataType.UINT32, write: true},
+
+                    attr_0x0506: {ID: 0x0506, type: Zcl.DataType.UINT8, write: true},
+                    attr_0x0507: {ID: 0x0507, type: Zcl.DataType.UINT8, write: true},
+
+                    attr_0xfffd: {ID: 0xfffd, type: Zcl.DataType.UINT16, write: true},
+
+                    // 0x0000  48 (0x30): ENUM8      "switchOperationMode"
+                    //       0: Reset device?
+                    //       1: Decoupled
+                    //       2: Control relay
+                    //       3+: (invalid value reported)
+                    //     NOTE: affects all channels
+
+                    // 0x0100  34 (0x22): UINT24     "outletLedColor"
+                    // Probably intended for mood light purposes
+
+                    // 0x0101  32 (0x20): UINT8    *
+                    // 	 bit 0: enable relay control
+
+                    // 0x0102  32 (0x20): UINT8    *
+                    // 0x0103  32 (0x20): UINT8    *
+                    // 0x0104  32 (0x20): UINT8      "outletLedState"
+                    // 0x0105  24 (0x18): BITMAP8  *
+                    // 0x0106  32 (0x20): UINT8    *
+                    // 0x0107  27 (0x1b): BITMAP32   "ledSyncMode"
+                    //   3..0: for channel 1
+                    //   	     0: off
+                    //     1: on when switch is on,  off when switch is off
+                    //	     2: on when switch is off, off when switch is on  ('inverted')
+                    //	     3..15: ?
+                    //  7..4: for channel 2
+                    //   	     (same as channel 1)
+                    // 0x0200  35 (0x23): UINT32   * (RW) Read and write time in seconds
+                    //   31..0: seconds since start
+
+                    // 0x0506  32 (0x20): UINT8    * (RO)
+                    // 0x0507  32 (0x20): UINT8    *
+
+                    // 0x0600 241 (0xf1): (128-bit key)
+                    // 0x0601 241 (0xf1): (128-bit key)
+
+                    // 0xfffd  33 (0x21): UINT16   *
                 },
                 commands: {},
                 commandsResponse: {},
@@ -60,6 +111,18 @@ const local = {
                 attributes: {
                     switchActionReporting: {ID: 0x0001, type: Zcl.DataType.BITMAP8, write: true},
                     switchAction: {ID: 0x0002, type: Zcl.DataType.BITMAP32, write: true, max: 0x7ffff},
+
+                    attr_0x0000: {ID: 0x0000, type: Zcl.DataType.UINT8, write: true},
+
+                    attr_0x0100: {ID: 0x0100, type: Zcl.DataType.ENUM8, write: true},
+
+                    // 0x0000  32 (0x20): UINT8    *
+                    // 0x0001  24 (0x18): BITMAP8  "switchActionReporting"
+                    // 0x0002  27 (0x1b): BITMAP32 "SwitchAction"
+                    // 0x0100  48 (0x30): ENUM8    *
+                    // 0xfffd  33 (0x21): UINT16   *
+
+                    attr_0xfffd: {ID: 0xfffd, type: Zcl.DataType.UINT16, write: true},
                 },
                 commands: {},
                 commandsResponse: {},
