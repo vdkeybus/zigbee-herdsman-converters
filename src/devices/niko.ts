@@ -64,33 +64,41 @@ const local = {
 
                     attr_0xfffd: {ID: 0xfffd, type: Zcl.DataType.UINT16, write: true},
 
-                    // 0x0000  48 (0x30): ENUM8      "switchOperationMode"
+                    // 0x0000  48 (0x30): ENUM8      "switchOperationMode" (after reset: 2)
                     //       0: Reset device?
                     //       1: Decoupled
-                    //       2: Control relay
+                    //       2: Controlled relay
                     //       3+: (invalid value reported)
                     //     NOTE: affects all channels
 
-                    // 0x0100  34 (0x22): UINT24     "outletLedColor"
-                    // Probably intended for mood light purposes
+                    // 0x0100  34 (0x22): UINT24     "outletLedColor" (after reset: 0)
+                    // Probably intended for ambient light purposes
 
-                    // 0x0101  32 (0x20): UINT8    *
-                    // 	 bit 0: enable relay control
+                    // 0x0101  32 (0x20): UINT8    * (after reset: 1)
+                    // 	 bit 0: enable relay control?
 
-                    // 0x0102  32 (0x20): UINT8    *
-                    // 0x0103  32 (0x20): UINT8    *
-                    // 0x0104  32 (0x20): UINT8      "outletLedState"
-                    // 0x0105  24 (0x18): BITMAP8  *
-                    // 0x0106  32 (0x20): UINT8    *
-                    // 0x0107  27 (0x1b): BITMAP32   "ledSyncMode"
+                    // 0x0102  32 (0x20): UINT8    * (after reset: 55 (0x37))
+                    // 0x0103  32 (0x20): UINT8    * (after reset: 60 (0x3c))
+
+                    // 0x0104  32 (0x20): UINT8      "outletLedState" (after reset: 1)
+                    //   bit 0: enable LED control?
+
+                    // 0x0105  24 (0x18): BITMAP8  * (after reset: 0)
+                    //   bit 0: LED for channel 1
+                    //   bit 1: LED for channel 2
+
+                    // 0x0106  32 (0x20): UINT8    * (after reset: 1)
+
+                    // 0x0107  27 (0x1b): BITMAP32   "ledSyncMode" (after reset: 17)
                     //   3..0: for channel 1
-                    //   	     0: off
-                    //     1: on when switch is on,  off when switch is off
-                    //	     2: on when switch is off, off when switch is on  ('inverted')
-                    //	     3..15: ?
+                    // 	       0: off
+                    //         1: on when switch is on,  off when switch is off
+                    //	       2: on when switch is off, off when switch is on  ('inverted')
+                    //	       3..15: ?
                     //  7..4: for channel 2
-                    //   	     (same as channel 1)
-                    // 0x0200  35 (0x23): UINT32   * (RW) Read and write time in seconds
+                    //         (same as channel 1)
+
+                    // 0x0200  35 (0x23): UINT32   * Read and write time in seconds (after reset: 0, obviously)
                     //   31..0: seconds since start
 
                     // 0x0506  32 (0x20): UINT8    * (RO)
@@ -99,7 +107,8 @@ const local = {
                     // 0x0600 241 (0xf1): (128-bit key)
                     // 0x0601 241 (0xf1): (128-bit key)
 
-                    // 0xfffd  33 (0x21): UINT16   *
+                    // 0xfffd  33 (0x21): UINT16   * (RO - after reset: 1)
+                    //   Cluster revision
                 },
                 commands: {},
                 commandsResponse: {},
@@ -116,11 +125,22 @@ const local = {
 
                     attr_0x0100: {ID: 0x0100, type: Zcl.DataType.ENUM8, write: true},
 
-                    // 0x0000  32 (0x20): UINT8    *
+                    // 0x0000  32 (0x20): UINT8    * (after reset: 5)
+                    //  valid range is 0..5
+
                     // 0x0001  24 (0x18): BITMAP8  "switchActionReporting"
+                    // Bit 0: unknown, but set in a reset device. Leave as-is.
+                    //     1: enable reporting for channel 1 button
+                    //     2: enable reporting for channel 1 ext. button input
+                    //     3: enable reporting for channel 2 button
+                    //     4: enable reporting for channel 2 ext. button input
+
                     // 0x0002  27 (0x1b): BITMAP32 "SwitchAction"
+
                     // 0x0100  48 (0x30): ENUM8    *
-                    // 0xfffd  33 (0x21): UINT16   *
+
+                    // 0xfffd  33 (0x21): UINT16   * (RO - after reset: 1)
+                    //   Cluster revision
 
                     attr_0xfffd: {ID: 0xfffd, type: Zcl.DataType.UINT16, write: true},
                 },
@@ -260,11 +280,6 @@ const local = {
         switch_action_reporting: {
             key: ["action_reporting"],
             convertSet: async (entity, key, value, meta) => {
-                // Bit 0: unknown, but set in a reset device. Leave as-is.
-                //     1: enable reporting for channel 1 button
-                //     2: enable reporting for channel 1 ext. button input
-                //     3: enable reporting for channel 2 button
-                //     4: enable reporting for channel 2 ext. button input
                 const actionReportingMap: KeyValue = {false: 0x01, true: 0x1f};
                 // @ts-expect-error ignore
                 if (actionReportingMap[value] === undefined) {
